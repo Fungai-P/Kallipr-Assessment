@@ -50,8 +50,7 @@ export default function App() {
     data.sort((a, b) => new Date(a.recordedAt).getTime() - new Date(b.recordedAt).getTime());
     setTelemetry(data);
   }
-
-  // Load devices when tenant changes
+  
   useEffect(() => {
     if (!customerId.trim()) {
       setDevices([]);
@@ -305,7 +304,6 @@ export default function App() {
                     onChange={(e) => setNewRecordedAt(e.target.value)}
                     placeholder="ISO string or any date value"
                   />
-                  <div className="hint">Example: 2025-05-04T12:34:56Z</div>
                 </label>
 
                 <div className="span2">
