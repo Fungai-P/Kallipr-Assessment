@@ -25,7 +25,7 @@ dotnet run
 
 API will run on:
 ```
-http://localhost:5000
+http://localhost:7073
 ```
 
 ## Run the Frontend
