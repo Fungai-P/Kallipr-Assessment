@@ -1,6 +1,6 @@
 ﻿namespace DeviceTelemetryService.Middleware;
 
-public class TenantMiddleware(RequestDelegate next)
+public class TenantMiddleware(RequestDelegate next, ILogger<TenantMiddleware> _logger)
 {
     public async Task Invoke(HttpContext ctx, TenantContext tenant)
     {
@@ -9,6 +9,7 @@ public class TenantMiddleware(RequestDelegate next)
 
         if (string.IsNullOrWhiteSpace(customerId))
         {
+            _logger.LogError("Missing tenant. No X-Customer-Id header provided.");
             ctx.Response.StatusCode = StatusCodes.Status400BadRequest;
             await ctx.Response.WriteAsync("Missing tenant. No X-Customer-Id header provided.");
             return;

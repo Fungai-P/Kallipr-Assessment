@@ -18,6 +18,10 @@ public static class TelemetryEndpoints
             CancellationToken cancellationToken) =>
         {
             var result = await handler.AddEventAsync(tenant.CustomerId, request.Map(tenant.CustomerId), cancellationToken);
+            if (result == null)
+            {
+                return Results.BadRequest("Failed to add telemetry event.");
+            }
 
             return Results.Ok(result?.Map());
         })
