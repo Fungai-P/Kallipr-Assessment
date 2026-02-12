@@ -7,7 +7,10 @@ using Microsoft.Extensions.Options;
 
 namespace DeviceTelemetryService.Filters;
 
-public class IdempotencyEndpointFilter(ITelemetryRepository _telemetryRepository, IOptions<IdempotencyOptions> _options) : IEndpointFilter
+public class IdempotencyEndpointFilter(
+    ITelemetryRepository _telemetryRepository,
+    IOptions<IdempotencyOptions> _options,
+    ILogger<IdempotencyEndpointFilter> _logger) : IEndpointFilter
 {
     public async ValueTask<object?> InvokeAsync(
         EndpointFilterInvocationContext context,
@@ -26,7 +29,10 @@ public class IdempotencyEndpointFilter(ITelemetryRepository _telemetryRepository
             CancellationToken.None);
 
         if (keyMatched)
+        {
+            _logger.LogInformation($"Possible duplicate: Idempotency key matched for device {request.DeviceId} for tenant customer {tenant.CustomerId}");
             return Results.Conflict();
+        }            
 
         var result = await next(context);
 
